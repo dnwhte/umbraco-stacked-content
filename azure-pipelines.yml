@@ -16,6 +16,7 @@ variables:
   version: 2.0.4.$(Build.BuildId)
 
 steps:
+- task: NuGetToolInstaller@1
 
 - task: CmdLine@2
   displayName: 'Build Packages'
@@ -27,7 +28,6 @@ steps:
     BuildNumber: $(Build.BuildId)
     Tag: false
     Suffix: 'lcsc'
-- task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
   inputs:
