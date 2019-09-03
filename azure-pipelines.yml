@@ -8,16 +8,21 @@ variables:
   version: 2.0.4.$(Build.BuildId)
 
 steps:
-- task: CmdLine@2
-  displayName: 'Build Packages'
+- task: NuGetCommand@2
   inputs:
-    script: 'build-pipelines.cmd'
+    command: 'restore'
+    restoreSolution: '**/*.sln'    
+
+- task: MSBuild@1
+  inputs:
+    solution: 'build/package.proj'
+    msbuildVersion: '15.0'
   env:
-    BranchName: $(Build.SourceBranchName)
-    Version: $(version)
-    BuildNumber: $(Build.BuildId)
-    Tag: false
-    Suffix: 'lcsc'
+    APPVEYOR_REPO_BRANCH: $(Build.SourceBranchName)
+    APPVEYOR_REPO_TAG: false
+    APPVEYOR_BUILD_NUMBER: $(Build.BuildId)
+    APPVEYOR_BUILD_VERSION: $(version)
+    UMBRACO_PACKAGE_PRERELEASE_SUFFIX: 'lcsc'
 
 - task: PublishBuildArtifacts@1
   inputs:
