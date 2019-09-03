@@ -15,7 +15,7 @@ steps:
 
 - task: MSBuild@1
   inputs:
-    solution: 'build\\package.proj'
+    solution: 'build/package.proj'
     msbuildVersion: '15.0'
   env:
     APPVEYOR_REPO_BRANCH: $(Build.SourceBranchName)
@@ -23,17 +23,6 @@ steps:
     APPVEYOR_BUILD_NUMBER: $(Build.BuildId)
     APPVEYOR_BUILD_VERSION: $(version)
     UMBRACO_PACKAGE_PRERELEASE_SUFFIX: 'lcsc'
-
-- task: CmdLine@2
-  displayName: 'Build Packages'
-  inputs:
-    script: 'build-pipelines.cmd'
-  env:
-    BranchName: $(Build.SourceBranchName)
-    Version: $(version)
-    BuildNumber: $(Build.BuildId)
-    Tag: false
-    Suffix: 'lcsc'
 
 - task: PublishBuildArtifacts@1
   inputs:
