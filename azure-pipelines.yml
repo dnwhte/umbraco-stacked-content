@@ -13,6 +13,12 @@ variables:
 
 steps:
 - task: CmdLine@2
+  inputs:
+    script: |
+      cd " \%windir%\Microsoft.NET\FrameWork"
+      .\MSBuild.exe -version.
+
+- task: CmdLine@2
   displayName: 'Build Packages'
   inputs:
     script: 'build-pipelines.cmd'
