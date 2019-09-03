@@ -2,22 +2,16 @@
 # Build and test ASP.NET projects.
 # Add steps that publish symbols, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
-
 trigger:
-- master
+- master.custom
 
 pool:
-  vmImage: 'vs2015-win2012r2'
+  vmImage: 'vs2017-win2016'  
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
   version: 2.0.4.$(Build.BuildId)
 
 steps:
-- task: NuGetToolInstaller@1
-
 - task: CmdLine@2
   displayName: 'Build Packages'
   inputs:
@@ -29,18 +23,8 @@ steps:
     Tag: false
     Suffix: 'lcsc'
 
-- task: NuGetCommand@2
+- task: PublishBuildArtifacts@1
   inputs:
-    restoreSolution: '$(solution)'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    PathtoPublish: 'artifacts'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
