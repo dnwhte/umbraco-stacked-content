@@ -23,6 +23,11 @@ steps:
   inputs:
     solution: 'build\\package.proj'
     msbuildVersion: '15.0'
+  env:
+    APPVEYOR_REPO_BRANCH: $(Build.SourceBranchName)
+    APPVEYOR_REPO_TAG: false
+    APPVEYOR_BUILD_NUMBER: $(Build.BuildId)
+    APPVEYOR_BUILD_VERSION: $(version)
 
 - task: CmdLine@2
   displayName: 'Build Packages'
