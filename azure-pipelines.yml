@@ -1,0 +1,31 @@
+trigger:
+- master.custom
+
+pool:
+  vmImage: 'vs2017-win2016'
+
+variables:
+  version: 2.0.4.$(Build.BuildId)
+
+steps:
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '**/*.sln'    
+
+- task: MSBuild@1
+  inputs:
+    solution: 'build/package.proj'
+    msbuildVersion: '15.0'
+  env:
+    APPVEYOR_REPO_BRANCH: $(Build.SourceBranchName)
+    APPVEYOR_REPO_TAG: false
+    APPVEYOR_BUILD_NUMBER: $(Build.BuildId)
+    APPVEYOR_BUILD_VERSION: $(version)
+    UMBRACO_PACKAGE_PRERELEASE_SUFFIX: 'lcsc'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'artifacts'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
