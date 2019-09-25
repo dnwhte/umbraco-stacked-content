@@ -18,9 +18,13 @@ angular.module("umbraco").controller("Our.Umbraco.StackedContent.Controllers.Sta
         $scope.prompts = {};
         $scope.model.value = $scope.model.value || [];
 
-        $scope.contentTypeGuids = _.uniq($scope.model.config.contentTypes.map(function (itm) {
-            return itm.icContentTypeGuid;
-        }));
+        $scope.contentTypeGuids = _.uniq(_.flatten($scope.model.config.contentTypes.map(function (group) {
+            var guids = group.docTypes.map(function (itm) {
+                return itm.icContentTypeGuid;
+            });
+
+            return guids;
+        })));  
 
         $scope.canAdd = function () {
             return (!$scope.model.config.maxItems || $scope.model.config.maxItems === "0" || $scope.model.value.length < $scope.model.config.maxItems) && $scope.model.config.singleItemMode !== "1";
@@ -81,6 +85,7 @@ angular.module("umbraco").controller("Our.Umbraco.StackedContent.Controllers.Sta
 
         $scope.sortableOptions = {
             axis: "y",
+            delay: 150,
             cursor: "move",
             handle: ".stack__preview-wrapper",
             helper: function () {
