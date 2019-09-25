@@ -85,6 +85,7 @@ angular.module("umbraco").controller("Our.Umbraco.StackedContent.Controllers.Sta
 
         $scope.sortableOptions = {
             axis: "y",
+            delay: 150,
             cursor: "move",
             handle: ".stack__preview-wrapper",
             helper: function () {
