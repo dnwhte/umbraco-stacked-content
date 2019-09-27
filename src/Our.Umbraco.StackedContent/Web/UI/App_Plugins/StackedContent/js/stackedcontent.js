@@ -145,7 +145,7 @@ angular.module("umbraco").controller("Our.Umbraco.StackedContent.Controllers.Sta
                 innerContentService.populateName(data.model, data.idx, $scope.model.config.contentTypes);
 
                 if (previewEnabled) {
-                    scResources.getPreviewMarkup(data.model, data.icContentTypeName, data.icon, editorState.current.id).then(function (markup) {
+                    scResources.getPreviewMarkup(data.model, data.model.icContentTypeName, data.model.icon, editorState.current.id).then(function (markup) {
                         if (markup) {
                             $scope.markup[data.model.key] = markup;
                         }
