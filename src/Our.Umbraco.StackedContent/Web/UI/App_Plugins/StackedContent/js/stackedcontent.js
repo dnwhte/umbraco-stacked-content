@@ -105,7 +105,7 @@ angular.module("umbraco").controller("Our.Umbraco.StackedContent.Controllers.Sta
         // Helpers
         var loadPreviews = function () {
             _.each($scope.model.value, function (itm) {
-                scResources.getPreviewMarkup(itm, editorState.current.id).then(function (markup) {
+                scResources.getPreviewMarkup(itm, itm.icContentTypeName, itm.icon, editorState.current.id).then(function (markup) {
                     if (markup) {
                         $scope.markup[itm.key] = markup;
                     }
@@ -145,7 +145,7 @@ angular.module("umbraco").controller("Our.Umbraco.StackedContent.Controllers.Sta
                 innerContentService.populateName(data.model, data.idx, $scope.model.config.contentTypes);
 
                 if (previewEnabled) {
-                    scResources.getPreviewMarkup(data.model, editorState.current.id).then(function (markup) {
+                    scResources.getPreviewMarkup(data.model, data.icContentTypeName, data.icon, editorState.current.id).then(function (markup) {
                         if (markup) {
                             $scope.markup[data.model.key] = markup;
                         }
@@ -222,12 +222,16 @@ angular.module("umbraco.resources").factory("Our.Umbraco.StackedContent.Resource
 
     function ($http, umbRequestHelper) {
         return {
-            getPreviewMarkup: function (data, pageId) {
+            getPreviewMarkup: function (data, contentTypeName, contentTypeIcon, pageId) {
                 return umbRequestHelper.resourcePromise(
                     $http({
                         url: umbRequestHelper.convertVirtualToAbsolutePath("~/umbraco/backoffice/StackedContent/StackedContentApi/GetPreviewMarkup"),
                         method: "POST",
-                        params: { pageId: pageId },
+                        params: {
+                            contentTypeName: contentTypeName,
+                            contentTypeIcon: contentTypeIcon,
+                            pageId: pageId
+                        },
                         data: data
                     }),
                     "Failed to retrieve preview markup"

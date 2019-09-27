@@ -11,6 +11,10 @@ namespace Our.Umbraco.StackedContent.Web
 
         public IPublishedContent Item { get; set; }
 
+        public string ContentTypeName { get; set; }
+
+        public string ContentTypeIcon { get; set; }
+
         #region IPublishedContent Implementation
 
         int IPublishedContent.GetIndex()
