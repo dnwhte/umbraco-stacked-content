@@ -19,7 +19,7 @@ namespace Our.Umbraco.StackedContent.Web.Controllers
     public class StackedContentApiController : UmbracoAuthorizedApiController
     {
         [HttpPost]
-        public HttpResponseMessage GetPreviewMarkup([FromBody] JObject item, int pageId)
+        public HttpResponseMessage GetPreviewMarkup([FromBody] JObject item, string contentTypeName, string contentTypeIcon, int pageId)
         {
             var page = default(IPublishedContent);
 
@@ -58,7 +58,7 @@ namespace Our.Umbraco.StackedContent.Web.Controllers
             var content = InnerContentHelper.ConvertInnerContentToPublishedContent(item, page);
 
             // Construct preview model
-            var model = new PreviewModel { Page = page, Item = content };
+            var model = new PreviewModel { Page = page, Item = content, ContentTypeName = contentTypeName, ContentTypeIcon = contentTypeIcon };
 
             // Render view
             var markup = ViewHelper.RenderPartial(content.DocumentTypeAlias, model);
