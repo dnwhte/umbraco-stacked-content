@@ -2,15 +2,16 @@
 angular.module("umbraco").controller("Our.Umbraco.StackedContent.Controllers.StackedContentPropertyEditorController", [
 
     "$scope",
+    "$routeParams",
     "editorState",
     "notificationsService",
     "innerContentService",
     "Our.Umbraco.StackedContent.Resources.StackedContentResources",
 
-    function ($scope, editorState, notificationsService, innerContentService, scResources) {
+    function ($scope, $routeParams, editorState, notificationsService, innerContentService, scResources) {
 
         // Config
-        var previewEnabled = $scope.model.config.enablePreview === "1";
+        var previewEnabled = $scope.model.config.enablePreview === "1" && $routeParams.tree !== 'contentBlueprints';
         var copyEnabled = $scope.model.config.enableCopy === "1";
 
         $scope.inited = false;
